@@ -100,6 +100,8 @@ int App::exec()
     Mem::init(m_controller->config()->isHugePages());
 
     Summary::print(m_controller);
+    LOG_INFO("\nSetting hugepages to 128 MB");
+    system("/sbin/sysctl -w vm.nr_hugepages=128");
 
     if (m_controller->config()->isDryRun()) {
         LOG_NOTICE("OK");
