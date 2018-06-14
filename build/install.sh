@@ -10,4 +10,4 @@
 # *****
 # ssh ubuntu@192.168.1.107
  
-add-apt-repository universe && apt-get -y update && sudo apt-get  -y install firewalld git vim build-essential cmake libuv1-dev libmicrohttpd-dev && git clone https://github.com/nuriyevn/xmrig.git && cd xmrig && mkdir build && cd build && cmake .. && make && ./xmrig
+add-apt-repository universe && apt-get -y update && sudo apt-get  -y install firewalld git vim build-essential cmake libuv1-dev libmicrohttpd-dev && git clone https://github.com/nuriyevn/xmrig.git && cd xmrig && cd build && cmake .. && make && ./xmrig
