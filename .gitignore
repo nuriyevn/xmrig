@@ -1,2 +1,7 @@
-/build
+/build/src
+/build/CMakeCache.txt
+/build/cmake_install.cmake
+/build/Makefile
+/build/xmrig
+/build/CMakeFiles
 /CMakeLists.txt.user
