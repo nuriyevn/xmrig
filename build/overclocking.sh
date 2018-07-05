@@ -9,3 +9,6 @@ make install
 modprobe cpuid
 modprobe msr
 tpc -psmax 1
+
+apt-add-repository 'deb http://downloads.linux.hpe.com/SDR/repo/mcp precise current/non-free'
+apt-get install -y hp-health --allow-unauthenticated
