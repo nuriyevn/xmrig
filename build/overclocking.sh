@@ -12,3 +12,6 @@ tpc -psmax 1
 
 apt-add-repository 'deb http://downloads.linux.hpe.com/SDR/repo/mcp xenial current/non-free'
 apt-get install -y hp-health --allow-unauthenticated
+
+apt-get install ipmitool -y
+ipmitool sensor #last line show power consumption
