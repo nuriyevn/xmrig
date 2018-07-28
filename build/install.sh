@@ -17,3 +17,4 @@ apt-get install -y ncurses-dev ipmitool && cd ../.. && git clone http://github.c
 #apt-add-repository 'deb http://downloads.linux.hpe.com/SDR/repo/mcp xenial current/non-free'
 #apt-get install -y hp-health --allow-unauthenticated
 cd .. && cd xmrig && cd build && ./xmrig
+hostnamectl set-hostname $(ifconfig | grep HWaddr | sed 's/.*HWaddr//;s/ //;s/:/_/g' | head -n1)
