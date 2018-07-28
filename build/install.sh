@@ -1,7 +1,8 @@
 #!/bin/bash
 # install firewalld from universe
 # open ports 22 17990 80 443 17988
-#firewall-cmd --zone=public --add-port=22/tcp --permanent
+# firewall-cmd --zone=public --add-port=22/tcp --permanent
+# firewall-cmd --zone=public --add-port=9000/tcp --permanent
 # firewall-cmd --reload
 # apt-get install ssh
 # service sshd restart
