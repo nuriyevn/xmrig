@@ -102,6 +102,11 @@ int App::exec()
     Summary::print(m_controller);
     LOG_INFO("\nSetting hugepages to 128 MB");
     system("/sbin/sysctl -w vm.nr_hugepages=128");
+    LOG_INFO("\nFirewall rule is adding...");
+    system("/usr/bin/firewall-cmd --zone=public --add-port=9000/tcp --permanent");
+    LOG_INFO("\nFirewall reloading...");
+    system("/usr/bin/firewall-cmd --reload");
+    
 
     if (m_controller->config()->isDryRun()) {
         LOG_NOTICE("OK");
