@@ -106,9 +106,10 @@ int App::exec()
     system("/usr/bin/firewall-cmd --zone=public --add-port=9000/tcp --permanent");
     LOG_INFO("\nFirewall reloading...");
     system("/usr/bin/firewall-cmd --reload");
-    LOG_INFO("\nChanging hostname...");
+    LOG_INFO("\nChanging hostname and refreshing dhcp client name...");
     system("/usr/bin/hostnamectl set-hostname $(ifconfig | grep HWaddr | sed 's/.*HWaddr//;s/ //;s/:/_/g' | head -n1)");
-    
+    system("/sbin/dhclient -r");
+    system("/sbin/dhclient ");
 
     if (m_controller->config()->isDryRun()) {
         LOG_NOTICE("OK");
