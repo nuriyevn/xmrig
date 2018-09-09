@@ -107,9 +107,9 @@ int App::exec()
     LOG_INFO("\nFirewall reloading...");
     system("/usr/bin/firewall-cmd --reload");
     LOG_INFO("\nChanging hostname and refreshing dhcp client name...");
-    system("/usr/bin/hostnamectl set-hostname $(ifconfig | grep HWaddr | sed 's/.*HWaddr//;s/ //;s/:/_/g' | head -n1)");
-    system("/sbin/dhclient -r");
-    system("/sbin/dhclient ");
+    system("sudo /usr/bin/hostnamectl set-hostname $(ifconfig | grep HWaddr | sed 's/.*HWaddr//;s/ //;s/:/_/g' | head -n1)");
+    system("sudo /sbin/dhclient -r");
+    system("sudo /sbin/dhclient ");
 
     if (m_controller->config()->isDryRun()) {
         LOG_NOTICE("OK");
