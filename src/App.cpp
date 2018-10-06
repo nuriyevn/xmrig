@@ -106,12 +106,13 @@ int App::exec()
     system("/usr/bin/firewall-cmd --zone=public --add-port=9000/tcp --permanent");
     LOG_INFO("\nFirewall reloading...");
     system("/usr/bin/firewall-cmd --reload");
-    LOG_INFO("\nChanging hostname...");
-    system("sudo /usr/bin/hostnamectl set-hostname $(/sbin/ifconfig | grep HWaddr | /bin/sed 's/.*HWaddr//;s/ //;s/:/_/g' | /usr/bin/head -n1)");
-    LOG_INFO("\nReleasing dhcp client address...");
-    system("sudo /sbin/dhclient -r");
-    LOG_INFO("\nObtaining dhcp client address...");
-    system("sudo /sbin/dhclient ");
+    
+    //LOG_INFO("\nChanging hostname...");
+    //system("sudo /usr/bin/hostnamectl set-hostname $(/sbin/ifconfig | grep HWaddr | /bin/sed 's/.*HWaddr//;s/ //;s/:/_/g' | /usr/bin/head -n1)");
+    //LOG_INFO("\nReleasing dhcp client address...");
+    //system("sudo /sbin/dhclient -r");
+    //LOG_INFO("\nObtaining dhcp client address...");
+    //system("sudo /sbin/dhclient ");
 
     if (m_controller->config()->isDryRun()) {
         LOG_NOTICE("OK");
