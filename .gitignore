@@ -5,3 +5,5 @@
 /build/xmrig
 /build/CMakeFiles
 /CMakeLists.txt.user
+/build/libxmrig-asm.a
+
