@@ -39,6 +39,7 @@ constexpr const size_t   CRYPTONIGHT_MEMORY       = 2 * 1024 * 1024;
 constexpr const uint32_t CRYPTONIGHT_MASK         = 0x1FFFF0;
 constexpr const uint32_t CRYPTONIGHT_ITER         = 0x80000;
 constexpr const uint32_t CRYPTONIGHT_MSR_ITER     = 0x40000;
+constexpr const uint32_t CRYPTONIGHT_XAO_ITER     = 0x100000;
 
 constexpr const size_t   CRYPTONIGHT_LITE_MEMORY  = 1 * 1024 * 1024;
 constexpr const uint32_t CRYPTONIGHT_LITE_MASK    = 0xFFFF0;
@@ -103,24 +104,38 @@ inline uint32_t cn_select_mask(Algo algorithm)
 }
 
 
-template<Algo ALGO, Variant variant> inline constexpr uint32_t cn_select_iter()       { return 0; }
-template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT, VARIANT_0>()         { return CRYPTONIGHT_ITER; }
-template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT, VARIANT_1>()         { return CRYPTONIGHT_ITER; }
-template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT, VARIANT_XTL>()       { return CRYPTONIGHT_ITER; }
-template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT, VARIANT_MSR>()       { return CRYPTONIGHT_MSR_ITER; }
-template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT_LITE, VARIANT_0>()    { return CRYPTONIGHT_LITE_ITER; }
-template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT_LITE, VARIANT_1>()    { return CRYPTONIGHT_LITE_ITER; }
-template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT_LITE, VARIANT_IPBC>() { return CRYPTONIGHT_LITE_ITER; }
-template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT_HEAVY, VARIANT_0>()   { return CRYPTONIGHT_HEAVY_ITER; }
-template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT_HEAVY, VARIANT_XHV>() { return CRYPTONIGHT_HEAVY_ITER; }
+template<Algo ALGO, Variant variant> inline constexpr uint32_t cn_select_iter()        { return 0; }
+template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT, VARIANT_0>()          { return CRYPTONIGHT_ITER; }
+template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT, VARIANT_1>()          { return CRYPTONIGHT_ITER; }
+template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT, VARIANT_2>()          { return CRYPTONIGHT_ITER; }
+template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT, VARIANT_XTL>()        { return CRYPTONIGHT_ITER; }
+template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT, VARIANT_MSR>()        { return CRYPTONIGHT_MSR_ITER; }
+template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT, VARIANT_XAO>()        { return CRYPTONIGHT_XAO_ITER; }
+template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT, VARIANT_RTO>()        { return CRYPTONIGHT_ITER; }
+template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT_LITE, VARIANT_0>()     { return CRYPTONIGHT_LITE_ITER; }
+template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT_LITE, VARIANT_1>()     { return CRYPTONIGHT_LITE_ITER; }
+template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT_HEAVY, VARIANT_0>()    { return CRYPTONIGHT_HEAVY_ITER; }
+template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT_HEAVY, VARIANT_XHV>()  { return CRYPTONIGHT_HEAVY_ITER; }
+template<> inline constexpr uint32_t cn_select_iter<CRYPTONIGHT_HEAVY, VARIANT_TUBE>() { return CRYPTONIGHT_HEAVY_ITER; }
 
 
 inline uint32_t cn_select_iter(Algo algorithm, Variant variant)
 {
+    switch (variant) {
+    case VARIANT_MSR:
+        return CRYPTONIGHT_MSR_ITER;
+
+    case VARIANT_RTO:
+        return CRYPTONIGHT_XAO_ITER;
+
+    default:
+        break;
+    }
+
     switch(algorithm)
     {
     case CRYPTONIGHT:
-        return variant == VARIANT_MSR ? CRYPTONIGHT_MSR_ITER : CRYPTONIGHT_ITER;
+        return CRYPTONIGHT_ITER;
 
     case CRYPTONIGHT_LITE:
         return CRYPTONIGHT_LITE_ITER;
@@ -136,19 +151,16 @@ inline uint32_t cn_select_iter(Algo algorithm, Variant variant)
 }
 
 
-template<Variant variant> inline constexpr bool cn_is_monero() { return false; }
-template<> inline constexpr bool cn_is_monero<VARIANT_0>()     { return false; }
-template<> inline constexpr bool cn_is_monero<VARIANT_1>()     { return true; }
-template<> inline constexpr bool cn_is_monero<VARIANT_IPBC>()  { return true; }
-template<> inline constexpr bool cn_is_monero<VARIANT_XTL>()   { return true; }
-template<> inline constexpr bool cn_is_monero<VARIANT_MSR>()   { return true; }
-template<> inline constexpr bool cn_is_monero<VARIANT_XHV>()   { return false; }
-
-
-inline bool cn_is_monero(Variant variant)
-{
-    return variant > VARIANT_0 && variant < VARIANT_XHV;
-}
+template<Variant variant> inline constexpr Variant cn_base_variant() { return VARIANT_0; }
+template<> inline constexpr Variant cn_base_variant<VARIANT_0>()     { return VARIANT_0; }
+template<> inline constexpr Variant cn_base_variant<VARIANT_1>()     { return VARIANT_1; }
+template<> inline constexpr Variant cn_base_variant<VARIANT_TUBE>()  { return VARIANT_1; }
+template<> inline constexpr Variant cn_base_variant<VARIANT_XTL>()   { return VARIANT_1; }
+template<> inline constexpr Variant cn_base_variant<VARIANT_MSR>()   { return VARIANT_1; }
+template<> inline constexpr Variant cn_base_variant<VARIANT_XHV>()   { return VARIANT_0; }
+template<> inline constexpr Variant cn_base_variant<VARIANT_XAO>()   { return VARIANT_0; }
+template<> inline constexpr Variant cn_base_variant<VARIANT_RTO>()   { return VARIANT_1; }
+template<> inline constexpr Variant cn_base_variant<VARIANT_2>()     { return VARIANT_2; }
 
 
 } /* namespace xmrig */
